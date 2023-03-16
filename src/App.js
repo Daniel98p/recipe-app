@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+
 
 function App() {
+
+const [recipeData, setRecipeData] = useState({});
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'd5c5d53983msh58a28aba6d7504ep151602jsn171f10339aec',
+		'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
+	}
+};
+
+useEffect(() => {
+  fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&tags=under_30_minutes', options)
+	.then(response => response.json())
+	.then(response => setRecipeData(response))
+	.catch(err => console.error(err));
+}, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    {recipeData?.results && (
+      <p className="name">{recipeData.results[0].name}</p>
+    )}
+    {recipeData?.results && (
+      <p className="description">{recipeData.results[0].description}</p>
+    )}
+    {recipeData?.results && (
+      <p className="instruction">{recipeData.results[0].instructions[0].display_text}</p>
+    )}
+    {recipeData?.results && (
+      <p className="instruction">{recipeData.results[0].instructions[1].display_text}</p>
+    )}
+    {recipeData?.results && (
+      <p className="instruction">{recipeData.results[0].instructions[2].display_text}</p>
+    )}
+    {recipeData?.results && (
+      <p className="instruction">{recipeData.results[0].instructions[3].display_text}</p>
+    )}
+    </>
   );
 }
 
