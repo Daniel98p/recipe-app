@@ -1,11 +1,11 @@
-p.name {
+.name {
     font-size: large;
     font-weight: bold;
+    color: red;
 }
-p.description {
+.description {
     font-size: medium;
-    font-weight: bold;
 }
-p.instruction {
+.instruction {
     font-size: small;
 }

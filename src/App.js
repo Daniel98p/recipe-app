@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react";
+import myApiKey from './api_key.txt'
 
 
 function App() {
 
 const [recipeData, setRecipeData] = useState({});
+const [apiKey, setApiKey] = useState('');
+fetch(myApiKey)
+  .then(response => response.text())
+  .then(text => {
+     setApiKey(text.trim());
+     console.log(text.trim());
+  });
 const options = {
 	method: 'GET',
 	headers: {
-		'X-RapidAPI-Key': 'd5c5d53983msh58a28aba6d7504ep151602jsn171f10339aec',
+		'X-RapidAPI-Key': apiKey,
 		'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
 	}
 };
@@ -22,22 +30,25 @@ useEffect(() => {
   return (
     <>
     {recipeData?.results && (
-      <p className="name">{recipeData.results[0].name}</p>
-    )}
-    {recipeData?.results && (
-      <p className="description">{recipeData.results[0].description}</p>
-    )}
-    {recipeData?.results && (
-      <p className="instruction">{recipeData.results[0].instructions[0].display_text}</p>
-    )}
-    {recipeData?.results && (
-      <p className="instruction">{recipeData.results[0].instructions[1].display_text}</p>
-    )}
-    {recipeData?.results && (
-      <p className="instruction">{recipeData.results[0].instructions[2].display_text}</p>
-    )}
-    {recipeData?.results && (
-      <p className="instruction">{recipeData.results[0].instructions[3].display_text}</p>
+      recipeData.results.map((result, index) => {
+        if (result.description && result.instructions){
+        return(
+          <div>
+            <p className="name" key={index}>{result.name}</p>
+            <p className="description" key={result.id}>{result.description}</p>
+            <ul>
+            {
+              result.instructions.map((instruction) => {
+              return <li className="instruction" key={instruction.id}>{instruction.display_text}</li>
+            })
+            }
+            </ul>
+          </div>
+        )}
+        else{
+          return null
+        }
+      })
     )}
     </>
   );
