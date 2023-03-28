@@ -5,7 +5,9 @@
 }
 .description {
     font-size: medium;
+    visibility: hidden;
 }
 .instruction {
     font-size: small;
+    visibility: hidden;
 }

@@ -1,32 +1,37 @@
 import { useState, useEffect } from "react";
 import myApiKey from './api_key.txt'
+import './App.css';
 
 
 function App() {
 
 const [recipeData, setRecipeData] = useState({});
 const [apiKey, setApiKey] = useState('');
-fetch(myApiKey)
-  .then(response => response.text())
-  .then(text => {
-     setApiKey(text.trim());
-     console.log(text.trim());
-  });
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': apiKey,
-		'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
-	}
-};
 
 useEffect(() => {
-  fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&tags=under_30_minutes', options)
-	.then(response => response.json())
-	.then(response => setRecipeData(response))
-	.catch(err => console.error(err));
-}, [])
+  fetch(myApiKey)
+    .then(response => response.text())
+    .then(text => setApiKey(text.trim()))
+    .catch(error => console.error(error));
+}, []);
 
+
+useEffect(() => {
+  if (apiKey) {
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': apiKey,
+        'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
+      }
+    };
+
+    fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&tags=under_30_minutes', options)
+      .then(response => response.json())
+      .then(response => setRecipeData(response))
+      .catch(error => console.error(error));
+  }
+}, [apiKey]);
   return (
     <>
     {recipeData?.results && (
