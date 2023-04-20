@@ -7,6 +7,15 @@ function App() {
 
 const [recipeData, setRecipeData] = useState({});
 const [apiKey, setApiKey] = useState('');
+const [expandedIndex, setExpandedIndex] = useState(-1);
+
+const toggleDescription = (index) => {
+  if (index === expandedIndex) {
+    setExpandedIndex(-1);
+  } else {
+    setExpandedIndex(index);
+  }
+};
 
 useEffect(() => {
   fetch(myApiKey)
@@ -34,17 +43,18 @@ useEffect(() => {
 }, [apiKey]);
   return (
     <>
+    <h1 className="header">Avesome recipie list</h1>
     {recipeData?.results && (
       recipeData.results.map((result, index) => {
         if (result.description && result.instructions){
         return(
-          <div>
-            <p className="name" key={index}>{result.name}</p>
-            <p className="description" key={result.id}>{result.description}</p>
+          <div className="recipies-container">
+            <p className="name" key={index} onClick={() => toggleDescription(index)}>{result.name}</p>
+            <p className={`description ${expandedIndex === index ? 'show' : 'hide'}`} key={result.id}>{result.description}</p>
             <ul>
             {
               result.instructions.map((instruction) => {
-              return <li className="instruction" key={instruction.id}>{instruction.display_text}</li>
+              return <li className={`instruction ${expandedIndex === index ? 'show' : 'hide'}`}  key={instruction.id}>{instruction.display_text}</li>
             })
             }
             </ul>

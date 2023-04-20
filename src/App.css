@@ -1,13 +1,31 @@
+.recipies-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 .name {
     font-size: large;
     font-weight: bold;
-    color: red;
+    color: blue;
 }
 .description {
     font-size: medium;
-    visibility: hidden;
+    display: none;
 }
 .instruction {
     font-size: small;
-    visibility: hidden;
+    display: none;
 }
+.header {
+    color: purple;
+    text-align: center;
+}
+.show {
+    display: block;
+}
+  
+.hide {
+    display: none;
+}
+
